@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Administrator login</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lux/bootstrap.min.css" >
+    </head>
+    <body>
+        <br><br>
+        <div class="container text-muted w-50">
+            <div class="container">
+                <div class="card mb-3">
+                    <h3 class="card-header text-center">Please Login to access files</h3>
+                    <div class="card-body">
+                        <div id="entryform" class="content-wrap">
+                            <!-- <p class="card-text">Add a new quote to the list! All existing quotes can be found on the home page. Context is not required all however other fields are. Make sure the date is in YYYY-MM-DD format, and don't include the time.</p> -->
+                            <form method="POST">
+                                <div class="form-group row">
+                                    <label for="author" class="col-sm-2 col-form-label">Username</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="text" name="author" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="quote" class="col-sm-2 col-form-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="text" name="quote" required>
+                                    </div>
+                                </div>
+                                <div class="container w-50">
+                                    <input type="submit" class="btn btn-primary btn-s btn-block" name="addQuote" value="Login">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
