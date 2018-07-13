@@ -9,14 +9,14 @@
     <body>
         <br><br>
         <div class="container text-muted w-50">
+            <h1>{{error}}</h1>
             <div class="container">
                 <div class="card mb-3">
-                    <h3 class="card-header text-center">Please Login to access files</h3>
+                    <h3 class="card-header text-center">Please Login to access Site Admin Settings</h3>
                     <div class="card-body">
                         <div id="entryform" class="content-wrap">
                             <!-- <p class="card-text">Add a new quote to the list! All existing quotes can be found on the home page. Context is not required all however other fields are. Make sure the date is in YYYY-MM-DD format, and don't include the time.</p> -->
-                            <form method="POST">
-
+                            <form name="adminLogin" method="POST">
                                 <label for="author">Username</label>
                                 <div class="form-group row">
                                     <div class="col-sm-10">

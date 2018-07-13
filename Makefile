@@ -12,22 +12,6 @@ APPNAME=mielepot
 intro:
 	@echo "\n					MielePot"
 
-clean:
-	@echo "Deleteting Old Files"
-
-clean_images:
-	@#clean images TODO: These commands need Makefile compatibility
-	@docker rmi $(docker images | awk '{print $1}')
-	@docker images
-
-clean_containers:
-	@#clean Containers TODO: These commands need Makefile compatibility
-	@docker kill $(docker ps -a | awk '{print $1}')
-	@docker rm $(docker ps -a | awk '{print $1}')
-	@docker ps -a
-
-
-
 
 
 #####################
