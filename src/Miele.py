@@ -47,9 +47,11 @@ def login():
 
 
 def createLog(log, hostIP):
+    logHeader = 'ID,Timestamp,hostIP,hostName,hostPID,HPID,method,requestedText,sourceIP,sourcePort,userAgent,text\n'
     #Make sure you get the HOSTNAME
     try:
         hostName = os.environ['USER']
+        getHostName = True
     except:
         getHostName = False
 
@@ -75,6 +77,7 @@ def createLog(log, hostIP):
     else:
         #create new file
         file = open(fileName, 'w')
+        file.write(logHeader)
 
     file.write(logEntry)
     file.close()
