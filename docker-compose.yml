@@ -1,0 +1,26 @@
+# docker-compose.yml
+# 2018-7-23
+# Boot the required services for Miele
+# Author:  Daniel Nicolas Gisolfi
+
+version: "2"
+services:
+    flask:
+        image: dgisolfi/mielepot:latest
+        # build: .
+        ports:
+            - "80:4400"
+        # volumes:
+        #     - ./src/:/src/
+        environment:
+            - HPID=4f35513576525f67ade27d8d5b5635c5
+        depends_on:
+            - db
+    db:
+        image: postgres:latest
+        restart: always
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./db/miele.sql:/docker-entrypoint-initdb.d/miele.sql
+        environment:

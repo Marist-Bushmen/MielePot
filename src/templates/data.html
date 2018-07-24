@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Admin Keys</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lux/bootstrap.min.css" >
+    </head>
+    <body>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Description</th>
+              <th scope="col">Username</th>
+              <th scope="col">Password</th>
+            </tr>
+          </thead>
+          <tbody>
+              {% for item in data %}
+               <tr>
+                    <td>{{ item.descr }}</td>
+                    <td>{{ item.uname }}</td>
+                    <td>{{ item.pwd }}</td>
+                </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+    </body>

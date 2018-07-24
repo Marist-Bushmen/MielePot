@@ -6,12 +6,11 @@
 
 #Path to data backups
 backup_path="/home/dgisolfi/projects/miele/logs/"
-date=$(date +"%d-%b-%Y")
+filename="MIE02-$(date +%F).log"
 
 # Set default file permissions
 umask 177
 
 # Dump logs into log file
-docker exec miele_prod sh -c 'cat Miele.log' >> $backup_path/ Log-$date.log
-
+docker exec miele_prod sh -c 'cat MIE02.log' > $backup_path/$filename
 #TODO: Remove files older than 30 days
