@@ -27,9 +27,10 @@ def getData(query):
     attempts = []
     for entry in cur.fetchall():
         descr = entry[1]
-        uname = entry[2]
-        pwd = entry[3]
-        attempts.append({'descr': descr, 'uname': uname,'pwd': pwd})
+        ip_address = entry[2] 
+        uname = entry[3]
+        pwd = entry[4]
+        attempts.append({'descr': descr, 'ip_address':ip_address, 'uname': uname,'pwd': pwd})
     return attempts
 
 

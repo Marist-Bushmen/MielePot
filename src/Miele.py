@@ -1,19 +1,18 @@
 #!/usr/bin/python3
 from flask import Flask, render_template, jsonify, request
-from datetime import date, datetime, timedelta
-import os.path, DB
+from datetime import datetime, timedelta, time, date
+import os.path, dbHelper, sendToQueue
 
 
 MielePot = Flask(__name__)
 
 #Global vars
-apiAbbr    = "MIE";
+apiAbbr    = "MIE"
 apiVersion = "02"
 ID = apiAbbr+apiVersion
 apiName = "Website Admin System v" + apiVersion
 apiPort = 4400
 HPID = os.environ['HPID']
-timestamp = str(datetime.now())
 
 
 @MielePot.route('/', methods=['GET', 'POST'])
@@ -21,6 +20,7 @@ def login():
     #get sddress of the container or vm As well as from the user
     hostIP = request.remote_addr
     fromIP = request.environ['REMOTE_ADDR']
+
 
 
     if request.method == "POST":
@@ -37,10 +37,10 @@ def login():
         createLog(log, hostIP)
 
         #record attempt in database
-        DB.insertIntoDB(uname, passw, str(fromIP))
+        dbHelper.insertIntoDB(uname, passw, str(fromIP))
 
         if str(request.form.get('username')) == 'admin' and str(request.form.get('password')) == 'admin':
-            return render_template('data.html', data=DB.getData('SELECT * FROM data;'))
+            return render_template('data.html', data=dbHelper.getData('SELECT * FROM data;'))
         else:
             return render_template(
             'login.html',
@@ -58,7 +58,6 @@ def login():
 
 def createLog(log, hostIP):
     logHeader = 'ID,Timestamp,hostIP,hostName,hostPID,HPID,method,requestedText,sourceIP,sourcePort,userAgent,text\n'
-    #PEI02,2018-07-20T17:38:55.316,172.17.0.2,351b872c1952,5,abcecc0f27f63ba841c5a5575b520302,POST,/listDIR,148.100.133.128,80,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:61.0) Gecko/20100101 Firefox/61.0,username=admin,password=admin
     #Make sure you get the HOSTNAME
     try:
         hostName = os.environ['USER']
@@ -76,31 +75,49 @@ def createLog(log, hostIP):
 
     #Finish the log file
     logEntry = (
-    ID + ',' + timestamp + ',' + hostIP + ','+ hostName + ','
+    ID + ',' + str(datetime.now()) + ',' + hostIP + ','+ hostName + ','
     + str(os.getpid()) + ',' + HPID + ',' + log + '\n'
     )
 
     #Log activity
-    filename = ID + '.log'
-    if os.path.exists(filename):
-        yesterday = (datetime.now() - timedelta(days=1))
-        file_date = datetime.fromtimestamp(os.path.getctime(filename)).day
+    filename = ID + '-' + str(datetime.today().date()) + '.log'
 
-        if file_date <= yesterday.day:
-           os.rename(ID + '-'+ str(yesterday.date()) + '.log')
+    
+    log_dir = 'logs/'
+    try:
+        os.stat(log_dir)
+    except:
+        os.mkdir(log_dir)  
 
-        #append to file
-        file = open(filename, 'a')
-
-    else:
-        #create new file
-        file = open(filename, 'w')
+    # Append to file or create a new one if it is a new day
+    file = open(log_dir+filename, 'a+')
+    
+    # If its a new file write a header
+    if os.stat(log_dir+filename).st_size == 0:
         file.write(logHeader)
+        
+        # Change to the log dir and count the number of logs
+        os.chdir(log_dir)    
+        file_count = len([name for name in os.listdir(".")])
+     
+        # If there are more than 10 files delete the oldest
+        if file_count > 10:
+            oldest_file = sorted(os.listdir(os.getcwd()), key=os.path.getmtime)[0]
+            print('-------------removing' + oldest_file)
+            os.remove(oldest_file)
 
+        # Change back to the original directory
+        os.chdir('..')    
+
+
+    #Send to Message Queue
+    sendToQueue.sendMsg(logEntry)
+
+    # Write the log entry
     file.write(logEntry)
     file.close()
 
 
 
 if __name__ == '__main__':
-    MielePot.run(host='0.0.0.0', port=apiPort)
+    MielePot.run(host='0.0.0.0', port=apiPort,debug=True)
