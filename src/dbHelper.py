@@ -1,10 +1,14 @@
 #!/usr/bin/python3
+# Author: Daniel N. Gisolfi
+# Purpose: to preform all connections and queries to the database
+# Date: 2018-10-05
+
 import os, json, psycopg2
 
 #Create db login credentials
 db_login = {
   'database': 'miele',
-  'user': 'miele',
+  'user': 'honey',
   'password': 'bigCh0ke',
   'host': 'db',
   'port': 5432
