@@ -13,8 +13,7 @@ CREATE TABLE data (
 );
 
 INSERT INTO data (descr,ip_address,username, password) values
-    ('File Directory Login','148.100.116.135:8080/listDIR','administrator', 'x'),
-    ('production VM','54.68.90.140','root','myw3bsever');
+    ('File Directory Login','/admin','administrator', 'x'),
 
 CREATE TABLE loginattempts (
   lid         serial      NOT NULL,
